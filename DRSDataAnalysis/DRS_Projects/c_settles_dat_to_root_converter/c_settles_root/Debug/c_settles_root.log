@@ -1,0 +1,44 @@
+﻿Build started 8/9/2016 7:40:55 PM.
+     1>Project "I:\_Files\Final DRS Data Analysis Setup\DRS_Projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt c_settles_root.cpp stdafx.cpp
+         stdafx.cpp
+         c_settles_root.cpp
+     1>c:\root_v5.34.36\include\tpad.h(326): warning C4800: 'Int_t': forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\root_v5.34.36\include\tpad.h(327): warning C4800: 'Int_t': forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\root_v5.34.36\include\tpad.h(328): warning C4800: 'Int_t': forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\root_v5.34.36\include\tpad.h(384): warning C4800: 'TVirtualViewer3D *const ': forcing value to bool 'true' or 'false' (performance warning)
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(431): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(448): warning C4244: 'initializing': conversion from 'Long64_t' to 'int', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(453): warning C4244: 'initializing': conversion from 'Long64_t' to 'int', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(491): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(492): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(493): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(494): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(532): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(533): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(534): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(535): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(573): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(574): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(575): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(576): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(617): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(618): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(619): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(620): warning C4244: '=': conversion from 'double' to 'Float_t', possible loss of data
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(228): warning C4101: 'newtime': unreferenced local variable
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(234): warning C4101: 'dt': unreferenced local variable
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(233): warning C4101: 'sovern': unreferenced local variable
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(235): warning C4101: 'flag': unreferenced local variable
+     1>i:\_files\final drs data analysis setup\drs_projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.cpp(230): warning C4101: 'area': unreferenced local variable
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"I:\_Files\Final DRS Data Analysis Setup\DRS_Projects\c_settles_dat_to_root_converter\Debug\c_settles_root.exe" /INCREMENTAL /NOLOGO "C:\root_v5.34.36\lib\*.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"I:\_Files\Final DRS Data Analysis Setup\DRS_Projects\c_settles_dat_to_root_converter\Debug\c_settles_root.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"I:\_Files\Final DRS Data Analysis Setup\DRS_Projects\c_settles_dat_to_root_converter\Debug\c_settles_root.lib" /MACHINE:X86 Debug\c_settles_root.obj
+         Debug\stdafx.obj
+         c_settles_root.vcxproj -> I:\_Files\Final DRS Data Analysis Setup\DRS_Projects\c_settles_dat_to_root_converter\Debug\c_settles_root.exe
+     1>Done Building Project "I:\_Files\Final DRS Data Analysis Setup\DRS_Projects\c_settles_dat_to_root_converter\c_settles_root\c_settles_root.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.11
