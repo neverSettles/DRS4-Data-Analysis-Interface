@@ -146,8 +146,9 @@
 #include <TGClient.h>
 #include <TGButton.h>
 #include <TGFrame.h>
-#include <string>
 #include <TTree.h>
+#include <string>
+#include <stdio.h>
 
 class MyMainFrame : public TGMainFrame {
 
@@ -156,7 +157,7 @@ private:
 	TGTextButton     *fBrowse, *fExit, *ConvertButton, *ViewButton, *GenerateButton, *ViewPedButton, *ViewSigButton, *ViewSigMPedButton;
 	TGTextEntry		*FilePath;
 	TGNumberEntry *LowNoiseNum, *HighNoiseNum, *LowSignalNum, *HighSignalNum;
-	TH1F PedHist, SigHist, SigMPedHist;
+	TH1F PedHist, SigHist, SigMPedHist, AvgHist;
 	bool MacroLoaded;
 	
 
@@ -238,7 +239,7 @@ void MyMainFrame::GenerateClicked()
 
 	if (!MacroLoaded) 
 	{
-		gROOT->LoadMacro("Integration.C");
+		gROOT->LoadMacro("C:\\DRSDataAnalysis\\DRS_Projects\\Integration\\Integration.C");
 		MacroLoaded = true;
 	}
 	//printf("Printf: Integration integral(\"%s\" , %i, %i, %i, %i );", rootpath, lowSig, highSig, lowNoise, highNoise);
@@ -252,7 +253,7 @@ void MyMainFrame::GenerateClicked()
 	gROOT->ProcessLineSync(command);
 	//gROOT->ProcessLineSync(sprintf("Integration integral(\"%s\", %i, %i, %i, %i );",  rootpath, lowSig, highSig, lowNoise, highNoise));
 	//gRoot->ProcessLineSync("integral.Loop()");
-	cout << "Got here without breaking" << endl;
+	cout << "Generation of analyzed file complete." << endl;
 
 }
 
@@ -265,25 +266,17 @@ void MyMainFrame::ViewPedClicked()
 	rootpath = rootpath.substr(0, rootpath.length() - 4);
 	rootpath += "_Analyzed.root";
 	cout << rootpath << endl; // For Debugging
-
 	TString newrootpath = rootpath;
-
 
 	TFile f(newrootpath);
 	TH1F *ptrhist = NULL;
 	f.GetObject("pedestal", ptrhist);
 	PedHist =  * ( (TH1F*) ptrhist->Clone());
 	PedHist.SetName("Pedestal Histogram");
-	TCanvas *PedCanvas = new TCanvas("PedCanvas", "Pedestal Canvas" , 1200,600);
+	TCanvas *PedCanvas = new TCanvas("PedCanvas", "Pedestal Canvas" , 900,600);
 
 	PedHist.Draw();
 	PedCanvas->Update();
-
-	/*cout << "1 " << endl;
-	gROOT->ProcessLineSync(".ls");
-	getchar();
-	cout << "2 " << endl;
-	gROOT->ProcessLineSync(".ls");*/
 
 }
 
@@ -305,7 +298,7 @@ void MyMainFrame::ViewSigClicked()
 	f.GetObject("integralhist", ptrhist);
 	SigHist = *((TH1F*)ptrhist->Clone());
 	SigHist.SetName("Signal Histogram");
-	TCanvas *SigCanvas = new TCanvas("SigCanvas", "Signal Canvas", 1200, 600);
+	TCanvas *SigCanvas = new TCanvas("SigCanvas", "Signal Canvas", 900, 600);
 	SigHist.Draw();
 
 	SigCanvas->Update();
@@ -331,7 +324,7 @@ void MyMainFrame::ViewSigMPedClicked()
 	SigMPedHist = *((TH1F*)ptrhist->Clone());
 	SigMPedHist.SetName("Signal Minus Pedestal");
 
-	TCanvas *SigMPedCanvas = new TCanvas("SigMPedCanvas", "Signal minus pedestal Canvas", 1200, 600);
+	TCanvas *SigMPedCanvas = new TCanvas("SigMPedCanvas", "Signal minus pedestal Canvas", 900, 600);
 	SigMPedHist.Draw();
 	SigMPedCanvas->Update();
 }
@@ -352,11 +345,33 @@ void MyMainFrame::ViewClicked()
 	TFile f(newrootpath);
 	TTree* mytree = NULL;
 	f.GetObject("T", mytree);
-	TCanvas *HistCanvas = new TCanvas("HistCanvas", "Histogram of 1000 events", 1200, 600);
+	TCanvas *HistCanvas = new TCanvas("HistCanvas", "Histogram of 1000 events", 900, 600);
 	mytree->Draw("c1:t1");
 	//CH1event1->Draw();
 	HistCanvas->Update();
 
+}
+
+//***********************************************************************
+//			Controls for ViewAverage Button
+//***********************************************************************
+void MyMainFrame::ViewAverageClicked()
+{
+	string rootpath = FilePath->GetText();
+	rootpath = rootpath.substr(0, rootpath.length() - 4);
+	rootpath += "_Analyzed.root";
+	cout << rootpath << endl; // For Debugging
+	TString newrootpath = rootpath;
+
+	TFile f(newrootpath);
+	TH1F *ptrhist = NULL;
+	f.GetObject("average", ptrhist);
+	AvgHist = *((TH1F*)ptrhist->Clone());
+	AvgHist.SetName("Average of all events");
+	TCanvas *AvgCanvas = new TCanvas("AvgCanvas", "Average Canvas", 900, 600);
+
+	AvgHist.Draw();
+	AvgCanvas->Update();
 }
 //***********************************************************************
 //			Controls for Browse Button
@@ -379,18 +394,29 @@ void MyMainFrame::BrowseClicked()
 	dir = fi.fIniDir;
 	FilePath->SetText(fi.fFilename);
 
+	if ( strlen(FilePath->GetText()) != 0)
+	{
+		ConvertClicked();
+		ViewClicked();
+	}
+	else {
+		cout << "No file selected!" << endl;
+	}
 }
 
 //***********************************************************************
 //			Controls for Convert Button
 //***********************************************************************
+
 void MyMainFrame::ConvertClicked()
 {
 	//gROOT->Macro("c_settles_root.cpp(1,\"file path\")");
 	//gROOT->ProcessLine(".x c_settles_root.cpp(1,\"file path\")");
+	cout << "Starting conversion..." << endl;
 	TString path = "\"C:\\DRSDataAnalysis\\DRS_Projects\\c_settles_dat_to_root_converter\\Release\\c_settles_root.exe\" ";
 	path += FilePath->GetText();
 	system(path);
+	cout << "Conversion complete!" << endl;
 }
 
 //***********************************************************************
@@ -408,15 +434,34 @@ void MyMainFrame::ConvertClicked()
 MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 	TGMainFrame(p, w, h)
 {
-	// Create a horizontal frame containing buttons
-	//fCframe = new TGCompositeFrame(this, 170, 20);
+	
+	TGFont *ufont;         // will reflect user font changes
+	ufont = gClient->GetFont("-*-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
+
+	TGGC   *uGC;           // will reflect user GC changes
+						   // graphics context changes
+
+	MacroLoaded = false;
 
 	//***********************************************************************
 	//			Controls for Browse Button
 	//***********************************************************************
-	
-	MacroLoaded = false;
-	
+	GCValues_t valigLabel;
+	valigLabel.fMask = kGCForeground | kGCBackground | kGCFillStyle | kGCFont | kGCGraphicsExposures;
+	gClient->GetColorByName("#000000", valigLabel.fForeground);
+	gClient->GetColorByName("#e8e8e8", valigLabel.fBackground);
+	valigLabel.fFillStyle = kFillSolid;
+	valigLabel.fFont = ufont->GetFontHandle();
+	valigLabel.fGraphicsExposures = kFALSE;
+	uGC = gClient->GetGC(&valigLabel, kTRUE);
+	TGLabel *Browselabel = new TGLabel(this, "Selecting a file will automatically convert it to root, and display the initial histogram. ", uGC->GetGC());
+	Browselabel->SetTextJustify(36);
+	Browselabel->SetMargins(0, 0, 0, 0);
+	Browselabel->SetWrapLength(-1);
+	this->AddFrame(Browselabel, new TGLayoutHints(kLHintsLeft | kLHintsTop, 2, 2, 2, 2));
+	Browselabel->MoveResize(400, 272, 128, 18);
+
+
 	fBrowse = new TGTextButton(this, "&Browse for DRS Binary (.dat) file......");
 	fBrowse->Connect("Clicked()", "MyMainFrame", this, "BrowseClicked()");
 	//fCframe->AddFrame(fBrowse, new TGLayoutHints(kLHintsTop | kLHintsRight,3, 2, 2, 2)); // Don't need to add a new frame
@@ -428,11 +473,7 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 	//***********************************************************************
 	//			Controls for FilePath Text Field
 	//***********************************************************************
-	TGFont *ufont;         // will reflect user font changes
-	ufont = gClient->GetFont("-*-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
 
-	TGGC   *uGC;           // will reflect user GC changes
-						   // graphics context changes
 	GCValues_t valath;
 	valath.fMask = kGCForeground | kGCBackground | kGCFillStyle | kGCFont | kGCGraphicsExposures;
 	gClient->GetColorByName("#000000", valath.fForeground);
@@ -489,7 +530,6 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 	//			Controls for Labels and Number Fields
 	//***********************************************************************\
 
-	// graphics context changes
 	GCValues_t valLabel;
 	valLabel.fMask = kGCForeground | kGCBackground | kGCFillStyle | kGCFont | kGCGraphicsExposures;
 	gClient->GetColorByName("#000000", valLabel.fForeground);
@@ -505,7 +545,9 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 	this->AddFrame(RangeLabel, new TGLayoutHints(kLHintsLeft | kLHintsTop, 2, 2, 2, 2));
 	RangeLabel->MoveResize(0, 240, 664, 24);
 		
-// graphics context changes
+
+	
+	//Lower Pedestal Range
 	GCValues_t valabel;
 	valabel.fMask = kGCForeground | kGCBackground | kGCFillStyle | kGCFont | kGCGraphicsExposures;
 	gClient->GetColorByName("#000000", valabel.fForeground);
@@ -527,7 +569,9 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 
 	ufont = gClient->GetFont("-*-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
 
-	// graphics context changes
+
+
+	//Higher Pedestal Range
 	GCValues_t valLabel;
 	valLabel.fMask = kGCForeground | kGCBackground | kGCFillStyle | kGCFont | kGCGraphicsExposures;
 	gClient->GetColorByName("#000000", valLabel.fForeground);
@@ -548,8 +592,7 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 	HighNoiseNum->MoveResize(136, 296, 110, 22);
 
 	ufont = gClient->GetFont("-*-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
-
-	// graphics context changes
+	//Lower Signal Range
 	GCValues_t valgLabel;
 	valgLabel.fMask = kGCForeground | kGCBackground | kGCFillStyle | kGCFont | kGCGraphicsExposures;
 	gClient->GetColorByName("#000000", valgLabel.fForeground);
@@ -569,6 +612,7 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 	this->AddFrame(LowSignalNum, new TGLayoutHints(kLHintsLeft | kLHintsTop, 2, 2, 2, 2));
 	LowSignalNum->MoveResize(272, 296, 110, 22);
 
+	//Higher Signal Range
 	GCValues_t valigLabel;
 	valigLabel.fMask = kGCForeground | kGCBackground | kGCFillStyle | kGCFont | kGCGraphicsExposures;
 	gClient->GetColorByName("#000000", valigLabel.fForeground);
@@ -590,8 +634,26 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 
 	ufont = gClient->GetFont("-*-helvetica-medium-r-*-*-12-*-*-*-*-*-iso8859-1");
 
-	// graphics context changes
+	///////////////////////////////////////////////////////Setting Default Values //////////////////////////////////////////////
+	int const defaultLowNoise = 100;
 
+	char defaultLowNoiseS[100]; sprintf(defaultLowNoiseS, "%i", defaultLowNoise);
+	LowNoiseNum->SetText(defaultLowNoiseS);
+
+	int const defaultHighNoise = 300;
+
+	char defaultHighNoiseS[100]; sprintf(defaultHighNoiseS, "%i", defaultHighNoise);
+	HighNoiseNum->SetText(defaultHighNoiseS);
+
+	int const defaultLowSignal = 700;
+
+	char defaultLowSignalS[100]; sprintf(defaultLowSignalS, "%i", defaultLowSignal);
+	LowSignalNum->SetText(defaultLowSignalS);
+
+	int const defaultHighSignal = 900;
+
+	char defaultHighSignalS[100]; sprintf(defaultHighSignalS, "%i", defaultHighSignal);
+	HighSignalNum->SetText(defaultHighSignalS);
 
 	//***********************************************************************
 	//			Controls for Generate Button
@@ -629,6 +691,14 @@ MyMainFrame::MyMainFrame(const TGWindow *p, UInt_t w, UInt_t h) :
 	AddFrame(ViewSigMPedButton, new TGLayoutHints(kLHintsTop | kLHintsLeft, 5, 5, 2, 2));
 	ViewSigMPedButton->SetToolTipText("View Singal - Noise distribution from generated file.");
 
+	//***********************************************************************
+	//			Controls for ViewAverage Button
+	//***********************************************************************
+
+	ViewAverageButton = new TGTextButton(this, "View Average of all events");
+	ViewAverageButton->Connect("Clicked()", "MyMainFrame", this, "ViewAverageClicked()");
+	AddFrame(ViewAverageButton, new TGLayoutHints(kLHintsTop | kLHintsLeft, 5, 5, 2, 2));
+	ViewAverageButton->SetToolTipText("View Average of all events");
 
 
 	//***********************************************************************

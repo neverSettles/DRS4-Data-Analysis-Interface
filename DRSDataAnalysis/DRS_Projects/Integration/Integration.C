@@ -53,19 +53,17 @@ void Integration::Loop()
    TH1F* integralhist = new TH1F("integralhist", "Integral underneath specified range", 200, -5, 5);
    TH1F* pedestal = new TH1F("pedestal", "Pedestal Histogram", 200, -5, 5);
    TH1F* subtractedIntegral = new TH1F("subtractedIntegral", "Subtracted Integral: Area - noise", 200, -5, 5);
-   TH2F* donIntegral = new TH2F("donIntegral", "X: Raw Int, Y: Pedestal", 200, -5, 5, 200, -5, 5);
-   TH2F* eventonint = new TH2F("eventonint", "X: event #, Y: Integral", 5000, 0, 5000, 200, -5, 5);
-   TH2F* eventonped = new TH2F("eventonped", "X: event #, Y: Pedestal", 5000, 0, 5000, 200, -5, 5);
-
    TH1F* average = new TH1F("average", "Average of all events", 1023, 0, 1023);
-   TH1F* averagesquared = new TH1F("averagesquared", "Average of all events, squared", 1023, 0, 1023);
-   TH1F* count = new TH1F("count", "# of all bins", 1023, 0, 1023);
-   TH2F* data = new TH2F("data", "data", 1023, 0, 1023, 60, -0.05, 0.01);
 
+   //TH2F* donIntegral = new TH2F("donIntegral", "X: Raw Int, Y: Pedestal", 200, -5, 5, 200, -5, 5);
+   //TH2F* eventonint = new TH2F("eventonint", "X: event #, Y: Integral", 5000, 0, 5000, 200, -5, 5);
+   //TH2F* eventonped = new TH2F("eventonped", "X: event #, Y: Pedestal", 5000, 0, 5000, 200, -5, 5);
+   //TH1F* averagesquared = new TH1F("averagesquared", "Average of all events, squared", 1023, 0, 1023
+   //TH1F* count = new TH1F("count", "# of all bins", 1023, 0, 1023);
+   //TH2F* data = new TH2F("data", "data", 1023, 0, 1023, 60, -0.05, 0.01);
    
+
    double oldpedestal = 0;
-
-
    
    //Added to program
 
@@ -130,20 +128,19 @@ void Integration::Loop()
 	  //Next loop over every bin in each event
 	  for (int i = 0; i < 1024; i++) {
 		  average->Fill(i, c1[i]/1024);
-		  average->Scale(1);
-		  averagesquared->Fill(i, c1[i] * c1[i]);
-		  count->Fill(i, 1);
-		  data->Fill(i, c1[i]);
+		  //averagesquared->Fill(i, c1[i] * c1[i]);
+		  //count->Fill(i, 1);
+		  //data->Fill(i, c1[i]);
 	  }
+	  average->Scale(1);
 
 	  //***********************************************************************
 	  //			Evaluating Raw Integral vs Pedestal for clarification
 	  //***********************************************************************
 
-	  donIntegral->Fill(intvariable, pedvariable);
-
-	  eventonint->Fill(event,intvariable);
-	  eventonped->Fill(event,pedvariable);
+	  //donIntegral->Fill(intvariable, pedvariable);
+	  //eventonint->Fill(event,intvariable);
+	  //eventonped->Fill(event,pedvariable);
    }
    
    //cout << "Var: " << intvariable << endl;
@@ -160,13 +157,14 @@ void Integration::Loop()
    integralhist->Write();
    pedestal->Write();
    subtractedIntegral->Write();
-   donIntegral->Write();
-   eventonint->Write();
-   eventonped->Write();
    average->Write();
-   averagesquared->Write();
-   count->Write();
-   data->Write();
+
+   //donIntegral->Write();
+   //eventonint->Write();
+   //eventonped->Write();
+   //averagesquared->Write();
+   //count->Write();
+   //data->Write();
    //cout << "Got to end of program" << endl;
    //myfile->Write();
    //cout << "wrote File" << endl;
